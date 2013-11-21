@@ -1,5 +1,5 @@
 WARN:=-Wall -Wextra
-CFLAGS:=-std=gnu99 -D_REENTRANT $(WARN)
+CFLAGS:=-std=gnu99 -D_REENTRANT $(WARN) -ggdb3
 LDFLAGS=-lfl
 src:=main.c lex.c
 obj:=$(src:.c=.o)
