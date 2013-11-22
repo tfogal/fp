@@ -1,0 +1,6 @@
+*.o
+interp
+lex.c
+grammar.c
+lexer.h
+tokens.h
