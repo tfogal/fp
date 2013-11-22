@@ -1,11 +1,17 @@
-%option header-file="tokens.h"
+%option 8bit
+%option bison-bridge bison-locations
+%option header-file="lexer.h"
+%option noinput
 %option nounput
 %option noyyalloc noyyfree noyyrealloc
 %option reentrant
+%option warn
+%option yylineno
 %top{
 #define _POSIX_C_SOURCE 200809L
-#define YY_NO_INPUT
+#include <inttypes.h>
 #include <stdio.h>
+#include "tokens.h"
 }
 
 CHAR ([[:alpha:]]|\-)
@@ -17,7 +23,7 @@ OPTION \-+[[:alnum:]]+
 whoami { printf("%s", getlogin()); }
 {IDENTIFIER} { printf("id: '%s'", yytext); }
 {OPTION} { printf("opt: '%s'", yytext); }
-. { printf(" "); }
+. ECHO;
 
 %%
 
