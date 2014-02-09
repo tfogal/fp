@@ -2,4 +2,6 @@ language: c
 compiler:
   - gcc
   - clang
+before_install:
+  - sudo apt-get -y install mpi-default-dev
 script: cd symbiote && make
