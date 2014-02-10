@@ -4,4 +4,4 @@ compiler:
   - clang
 before_install:
   - sudo apt-get -y install mpi-default-dev gfortran python-numpy
-script: cd symbiote && make
+script: cd symbiote && make && cd isosurf && make
