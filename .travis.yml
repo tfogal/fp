@@ -6,5 +6,6 @@ before_install:
   - sudo apt-get -y install mpi-default-dev gfortran python-numpy cppcheck
 script:
   - cd symbiote && make 
-  - cd symbiote/isosurf && make
-  - cppcheck *.c
+  - cd isosurf && make
+  - cd ..
+  - cppcheck *.c isosurf/*.c > /dev/null
