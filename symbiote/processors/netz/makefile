@@ -1,16 +1,15 @@
 MPICC=mpicc
-WARN=-Wall -Wextra
-DBG:=-ggdb -fno-omit-frame-pointer
-CFLAGS=-std=c99 -fPIC $(WARN) -I../../ $(DBG)
-FC=gfortran
-FFLAGS=$(WARN) -fPIC -ggdb
-LDFLAGS=-Wl,--no-allow-shlib-undefined -Wl,--no-undefined
-LDFLAGS:=-Wl,--no-undefined
+WARN=
+DBG:=-g
+FLAGS=-qlanglvl=extc99 -qpic=large -q64
+CFLAGS=$(FLAGS) $(WARN) -I../../ $(DBG)
+LDFLAGS:=-Wl,--no-undefined $(FLAGS)
 LDLIBS=-ldl -lrt
+SHARED=-G -qmkshrobj
 obj=ctest.mpi.o netz.mpi.o ../../debug.o ../../parallel.mpi.o
 cfanalyze:=$(shell mpicc -showme:compile) -I/usr/include/python2.7
 
-all: $(obj) libnetz.so hacktest
+all: $(obj) libnetz.so
 
 analyze: $(obj)
 	clang --analyze $(CFLAGS) $(cfanalyze) *.c
@@ -18,10 +17,10 @@ analyze: $(obj)
 	cppcheck --quiet *.c
 
 libnetz.so: ../../debug.o netz.mpi.o ../../parallel.mpi.o
-	$(MPICC) -ggdb -fPIC -shared $^ -o $@ $(LDFLAGS) $(LDLIBS)
+	$(MPICC) $(SHARED) $^ -o $@ $(LDFLAGS) $(LDLIBS)
 
 hacktest: ctest.mpi.o ../../debug.o netz.mpi.o ../../parallel.mpi.o
-	$(MPICC) -fPIC $^ -o $@ $(LDLIBS)
+	$(MPICC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
 %.mpi.o: %.mpi.c
 	$(MPICC) -c $(CFLAGS) $< -o $@
