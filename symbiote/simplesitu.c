@@ -70,7 +70,7 @@ free_processors() /* ha, ha */
   unload_processors(transferlibs);
 }
 
-__attribute__((constructor(200))) static void
+__attribute__((constructor(200))) void
 fp_init()
 {
   /* make sure we don't instrument any more children. */

@@ -53,6 +53,8 @@ fd_of(const struct openposixfile* f, const void* fdvoid)
   return f->fd == (*fd);
 }
 
+extern void fp_init();
+
 __attribute__((constructor(201))) static void
 fp_posix_init()
 {
@@ -63,11 +65,13 @@ fp_posix_init()
   assert(openf != NULL);
   assert(writef != NULL);
   assert(closef != NULL);
+  fp_init();
 }
 
 int
 open(const char* fn, int flags, ...)
 {
+  if(NULL == openf) { fp_posix_init(); }
   mode_t mode = S_IRUSR | S_IWUSR;
   if(flags & O_CREAT) {
     va_list lst;
