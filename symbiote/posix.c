@@ -72,6 +72,7 @@ int
 open(const char* fn, int flags, ...)
 {
   if(NULL == openf) { fp_posix_init(); }
+  assert(openf);
   mode_t mode = S_IRUSR | S_IWUSR;
   if(flags & O_CREAT) {
     va_list lst;
@@ -111,6 +112,8 @@ open(const char* fn, int flags, ...)
 ssize_t
 write(int fd, const void *buf, size_t sz)
 {
+  if(NULL == writef) { fp_posix_init(); }
+  assert(writef);
   struct openposixfile* of = ofposix_find(posix_files, fd_of, &fd);
   if(of == NULL) {
     return writef(fd, buf, sz);
@@ -137,6 +140,8 @@ write(int fd, const void *buf, size_t sz)
 int
 close(int des)
 {
+  if(NULL == closef) { fp_posix_init(); }
+  assert(closef);
   struct openposixfile* of = ofposix_find(posix_files, fd_of, &des);
   if(of == NULL) {
     TRACE(posix, "don't know FD %d; skipping 'close' instrumentation.", des);
