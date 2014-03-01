@@ -104,6 +104,7 @@ fp_init()
 FILE*
 fopen(const char* name, const char* mode)
 {
+  if(fopenf == NULL) { fp_init(); }
   if(mode == NULL) { errno = EINVAL; return NULL; }
   if(mode[0] == 'r' || strncmp(name, "/tmp", 4) == 0 ||
      !matches(transferlibs, name)) {
