@@ -12,7 +12,7 @@ obj=csv.o simplesitu.o debug.o parallel.mpi.o\
   echo.mpi.o \
   fproc.o posix.o h5.o
 
-all: $(obj) libsitu.so writecsv libecho.so
+all: $(obj) libsitu.so writecsv libecho.so situ
 
 analyze: $(obj)
 	clang --analyze $(shell mpicc -showme:compile) -I/usr/include/python2.7 *.c
@@ -57,7 +57,7 @@ envpar: parenv.mpi.o
 	$(MPICC) -c $(CFLAGS) $< -o $@
 
 situ: forkenv.o evfork.o
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LDLIBS)
 
 clean:
 	rm -f $(obj) \
